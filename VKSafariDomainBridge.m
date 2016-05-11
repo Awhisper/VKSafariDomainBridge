@@ -39,7 +39,7 @@ static VKSafariDomainBridge *__vksingleton__;
         __vksingleton__ = [[self alloc] init];
     });
     if (__vksingleton__.safariUrl && __vksingleton__.safariKey) {
-        return __vksingleton__
+        return __vksingleton__;
     }else
     {
         return nil;
@@ -51,7 +51,10 @@ static VKSafariDomainBridge *__vksingleton__;
     self = [super init];
     if (self) {
         self.timeOut = 1.0f;
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(VKSafariInfoRecieved:) name:VKSafariInfoReceivedNotification object:nil];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(VKSafariInfoRecieved:) name:VKSafariInfoReceivedNotification object:nil];
+        }
+        
     }
     return self;
 }
@@ -59,19 +62,27 @@ static VKSafariDomainBridge *__vksingleton__;
 
 -(void)VKGetSafariInfo:(VKSafariReturn)rtBlock
 {
-    if (rtBlock) {
-        self.rtblock = rtBlock;
-        
-        SFSafariViewController *safari = [[SFSafariViewController alloc]initWithURL:self.safariUrl];
-        safari.delegate = self;
-        safari.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-        safari.view.alpha = 0.0f;
-        self.safari = safari;
-        
-        UIViewController *currentVC = [self getCurrentVC];
-        self.currentVC = currentVC;
-        [currentVC presentViewController:safari animated:NO completion:nil];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
+        if (rtBlock) {
+            self.rtblock = rtBlock;
+            
+            SFSafariViewController *safari = [[SFSafariViewController alloc]initWithURL:self.safariUrl];
+            safari.delegate = self;
+            safari.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+            safari.view.alpha = 0.0f;
+            self.safari = safari;
+            
+            UIViewController *currentVC = [self getCurrentVC];
+            self.currentVC = currentVC;
+            [currentVC presentViewController:safari animated:NO completion:nil];
+        }
+    }else
+    {
+        if (rtBlock) {
+            rtBlock(NO,nil);
+        }
     }
+    
 }
 
 -(void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully{
