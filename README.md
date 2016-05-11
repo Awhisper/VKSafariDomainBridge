@@ -1,3 +1,9 @@
+感谢SafariAutoLoginTest这个demo项目提供的思路
+
+我把它从demo展示，封装成了易用的工具
+
+[SafariAutoLoginTest Github地址](https://github.com/mackuba/SafariAutoLoginTest)
+
 # VKSafariDomainBridge
 
 按理说整个流程应该分为2部分
