@@ -38,19 +38,14 @@ static VKSafariDomainBridge *__vksingleton__;
     dispatch_once(&once, ^{
         __vksingleton__ = [[self alloc] init];
     });
-    if (__vksingleton__.safariUrl && __vksingleton__.safariKey) {
-        return __vksingleton__;
-    }else
-    {
-        return nil;
-    }
+    return __vksingleton__;
 }
 
 -(instancetype)init
 {
     self = [super init];
     if (self) {
-        self.timeOut = 1.0f;
+        self.timeOut = 10.0f;
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(VKSafariInfoRecieved:) name:VKSafariInfoReceivedNotification object:nil];
         }
@@ -62,6 +57,13 @@ static VKSafariDomainBridge *__vksingleton__;
 
 -(void)VKGetSafariInfo:(VKSafariReturn)rtBlock
 {
+    if (__vksingleton__.safariUrl && __vksingleton__.safariKey) {
+        
+    }else
+    {
+        rtBlock(NO,nil);
+    }
+    
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
         if (rtBlock) {
             self.rtblock = rtBlock;
@@ -70,11 +72,13 @@ static VKSafariDomainBridge *__vksingleton__;
             safari.delegate = self;
             safari.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             safari.view.alpha = 0.0f;
+            safari.view.userInteractionEnabled = NO;
             self.safari = safari;
             
             UIViewController *currentVC = [self getCurrentVC];
             self.currentVC = currentVC;
-            [currentVC presentViewController:safari animated:NO completion:nil];
+            [self.currentVC.view addSubview:safari.view];
+            
         }
     }else
     {
