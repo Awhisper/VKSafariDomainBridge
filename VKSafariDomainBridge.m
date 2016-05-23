@@ -14,7 +14,6 @@
 @property (nonatomic,copy) VKSafariReturn rtblock;
 @property (nonatomic,strong) SFSafariViewController *safari;
 @property (nonatomic,strong) NSURL *safariUrl;
-@property (nonatomic,weak) UIViewController *currentVC;
 
 @end
 
@@ -75,9 +74,8 @@ static VKSafariDomainBridge *__vksingleton__;
             safari.view.userInteractionEnabled = NO;
             self.safari = safari;
             
-            UIViewController *currentVC = [self getCurrentVC];
-            self.currentVC = currentVC;
-            [self.currentVC.view addSubview:safari.view];
+            UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+            [window addSubview:safari.view];
             
         }
     }else
@@ -92,11 +90,9 @@ static VKSafariDomainBridge *__vksingleton__;
 -(void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully{
     __weak typeof(self) weakself = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.timeOut * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakself.currentVC dismissViewControllerAnimated:NO completion:^{
-            weakself.safari = nil;
-            weakself.currentVC = nil;
-        }];
         [weakself VKTimeOut];
+        [weakself.safari.view removeFromSuperview];
+        weakself.safari = nil;
     });
     
 }
@@ -120,36 +116,6 @@ static VKSafariDomainBridge *__vksingleton__;
         self.rtblock(NO,nil);
         self.rtblock = nil;
     }
-}
-
-//获取当前屏幕显示的viewcontroller
-- (UIViewController *)getCurrentVC
-{
-    UIViewController *result = nil;
-    
-    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-    if (window.windowLevel != UIWindowLevelNormal)
-    {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        for(UIWindow * tmpWin in windows)
-        {
-            if (tmpWin.windowLevel == UIWindowLevelNormal)
-            {
-                window = tmpWin;
-                break;
-            }
-        }
-    }
-    
-    UIView *frontView = [[window subviews] objectAtIndex:0];
-    id nextResponder = [frontView nextResponder];
-    
-    if ([nextResponder isKindOfClass:[UIViewController class]])
-        result = nextResponder;
-    else
-        result = window.rootViewController;
-    
-    return result;
 }
 
 @end
