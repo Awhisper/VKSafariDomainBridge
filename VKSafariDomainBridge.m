@@ -44,7 +44,7 @@ static VKSafariDomainBridge *__vksingleton__;
 {
     self = [super init];
     if (self) {
-        self.timeOut = 10.0f;
+        self.timeOut = 30.0f;
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(VKSafariInfoRecieved:) name:VKSafariInfoReceivedNotification object:nil];
         }
@@ -74,8 +74,7 @@ static VKSafariDomainBridge *__vksingleton__;
             safari.view.userInteractionEnabled = NO;
             self.safari = safari;
             
-            UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-            [window addSubview:safari.view];
+            [[[UIApplication sharedApplication] keyWindow] addSubview:safari.view];
             
         }
     }else
