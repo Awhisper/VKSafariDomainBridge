@@ -1,6 +1,6 @@
 # 这个工具已经不推荐使用了！！
 
-原因是，SFViewController的方案在iOS10以后，Openurl事件会以各种方式被系统吞吃掉事件，duplicate事件，等等，因为有了更好的替换方案，所以
+原因是，SFViewController的方案在iOS10以后，Openurl事件会以各种方式被系统吞吃掉事件，duplicate事件，等等，因为有了更好的替换方案
 
 __所以非常非常不推荐继续使用这个SafariAutoLogin方案了__
 
