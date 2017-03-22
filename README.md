@@ -9,7 +9,29 @@ __所以非常非常不推荐继续使用这个SafariAutoLogin方案了__
 
 [iOS app与浏览器深度链接 DeeperLink](http://awhisper.github.io/2016/05/11/iOSBrowserDomainBridge/)
 
-# 以下为原说明文档文
+># Update 2016.11.23
+
+>更新一个最新的方案，老文章里面介绍的2个方案都不如这个易操作，唯一的问题是就看iOS10的覆盖率了，覆盖率不够之前下文的`设备指纹方案`可以与这个方案互补
+
+>- 只支持iOS10以上
+>- 通过剪切板
+>- 跨越浏览器app与宿主app，传递数据
+
+>[clipboard.js](https://github.com/zenorocha/clipboard.js)
+
+>一个1w Star的js库
+
+>因为iOS10系统给js开放了API可以操作剪切板，因此直接使用这个库，可以很方便的在任何App的webview（包含safari，微信，qq，百度框等）将数据存入剪切板
+
+>然后很方便的在其他任何app中，读取出剪贴板的数据用于互通
+
+>这个方案在准确度上，成功率上，适用范围上全面优于下文讨论的`设备指纹`和`SafariViewController方案`
+
+>忘掉`SafariViewController方案`吧，这个方案现在非常的坑
+
+>原因是，SFViewController的方案，Openurl事件会以各种方式被系统吞吃掉事件，duplicate等等，都会导致失败率非常的高
+
+# 以下为原说明文档，不推荐使用，不推荐使用，不推荐使用
 
 
 
