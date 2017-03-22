@@ -1,3 +1,18 @@
+# 这个工具已经不推荐使用了！！
+
+原因是，SFViewController的方案在iOS10以后，Openurl事件会以各种方式被系统吞吃掉事件，duplicate事件，等等，因为有了更好的替换方案，所以
+
+__所以非常非常不推荐继续使用这个SafariAutoLogin方案了__
+
+
+新的方案请使用剪切板方案，详情看说明
+
+[iOS app与浏览器深度链接 DeeperLink](http://awhisper.github.io/2016/05/11/iOSBrowserDomainBridge/)
+
+# 以下为原说明文档文
+
+
+
 感谢SafariAutoLoginTest这个demo项目提供的思路
 
 我把它从demo展示，封装成了易用的工具
